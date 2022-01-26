@@ -10,6 +10,5 @@ import uz.jl.dto.GenericDto;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class QuizUpdateDto extends GenericDto {
 }

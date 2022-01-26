@@ -3,7 +3,6 @@ package uz.jl.dto.quiz;
 import lombok.*;
 import uz.jl.dto.GenericBaseDto;
 import uz.jl.entity.quiz.QuestionMark;
-import uz.jl.enums.Language.Language;
 
 import java.util.List;
 

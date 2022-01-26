@@ -8,8 +8,17 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import uz.jl.entity.auth.User;
+import uz.jl.entity.quiz.Quiz;
+import uz.jl.mappers.UserMapper.UserMapper;
+import uz.jl.mappers.quiz.QuizMapper;
+import uz.jl.respository.quiz.QuizRepository;
 import uz.jl.respository.user.UserRepository;
+import uz.jl.services.quiz.QuizService;
+import uz.jl.services.users.UserService;
 import uz.jl.ui.UI;
+import uz.jl.utils.BaseUtils;
+import uz.jl.utils.validator.QuizValidator;
+import uz.jl.utils.validator.UserValidator;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,28 +27,40 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class ApplicationContextHolder {
-    private static final UserRepository userRepository;
     private static MongoDatabase db;
+    private static BaseUtils utils;
 
+    private static final UserValidator userValidator;
+    private static final QuizValidator quizValidator;
 
+    private static final UserMapper userMapper;
+    private static final QuizMapper quizMapper;
 
+    private static final UserRepository userRepository;
+    private static final QuizRepository quizRepository;
 
-
-//    private static final UI ui;
-
-
-
+    private static final UserService userService;
+    private static final QuizService quizService;
+    private static final UI ui;
 
 
     static {
+        utils = new BaseUtils();
+
+        userValidator = new UserValidator(utils);
+        quizValidator = new QuizValidator(utils);
+
+        userMapper = new UserMapper();
+        quizMapper = new QuizMapper();
+
         userRepository = new UserRepository(User.class);
+        quizRepository = new QuizRepository(Quiz.class);
+
+        userService = new UserService(userRepository, userMapper, userValidator);
+        quizService = new QuizService(quizRepository, quizMapper, quizValidator);
 
 
-
-
-
-
-//        ui = new UI(userService, quizService, questionService, variantService);
+        ui = new UI(userService, quizService);
 
     }
 
@@ -49,8 +70,23 @@ public class ApplicationContextHolder {
 
     private static <T> T getBean(String beanName) {
         return switch (beanName) {
+
             case "MongoDatabase" -> (T) db;
+            case "BaseUtils" -> (T) utils;
+
+            case "UserValidator" -> (T) userValidator;
+            case "QuizValidator" -> (T) quizValidator;
+
+            case "UserMapper" -> (T) userMapper;
+            case "QuizMapper" -> (T) quizMapper;
+
             case "UserRepository" -> (T) userRepository;
+            case "QuizRepository" -> (T) quizRepository;
+
+            case "UserService" -> (T) userService;
+            case "QuizService" -> (T) quizService;
+
+
             case "UI" -> (T) ui;
             default -> throw new RuntimeException("Bean Not Found");
         };

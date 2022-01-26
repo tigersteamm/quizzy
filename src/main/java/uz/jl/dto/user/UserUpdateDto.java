@@ -7,7 +7,6 @@ import uz.jl.dto.GenericDto;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserUpdateDto extends GenericDto {
 
 }

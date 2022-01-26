@@ -7,7 +7,7 @@ import uz.jl.utils.BaseUtils;
 
 public class UserValidator extends BaseValidator<UserCreateDto, UserUpdateDto, ObjectId> {
 
-    protected UserValidator(BaseUtils utils) {
+    public UserValidator(BaseUtils utils) {
         super(utils);
     }
 

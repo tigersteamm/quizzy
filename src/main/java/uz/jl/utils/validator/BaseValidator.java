@@ -7,7 +7,6 @@ import uz.jl.utils.BaseUtils;
 import java.io.Serializable;
 
 /**
- * @param <M>  -> Collection
  * @param <CD> -> Create DTO
  * @param <UD> -> Update DTO
  * @param <K>  -> Identity KEY

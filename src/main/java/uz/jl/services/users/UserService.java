@@ -24,6 +24,13 @@ public class UserService extends AbstractService<UserRepository, UserMapper> imp
     }
 
 
+    public void login(String username, String password) {
+    }
+
+    public void logout() {
+    }
+
+
     @Override
     public ResponseEntity<Data<ObjectId>> create(UserCreateDto dto) {
         try {
@@ -54,4 +61,6 @@ public class UserService extends AbstractService<UserRepository, UserMapper> imp
     public ResponseEntity<Data<List<User>>> getList() {
         return null;
     }
+
+
 }

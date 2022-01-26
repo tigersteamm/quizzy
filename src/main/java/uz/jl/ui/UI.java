@@ -16,13 +16,13 @@ public class UI {
 //    private final QuestionService questionService;
 //    private final VariantService variantService;
 
-
-//    public UI(UserService userService, QuizService quizService, QuestionService questionService, VariantService variantService) {
-//        this.userService = userService;
-//        this.quizService = quizService;
+    public UI(UserService userService, QuizService quizService) {
+        this.userService = userService;
+        this.quizService = quizService;
 //        this.questionService = questionService;
 //        this.variantService = variantService;
-//    }
+    }
+
 
     /**
      * auth ui
@@ -69,7 +69,6 @@ public class UI {
     private <T> void showResponse(T response) {
         showResponse(Color.RED, response);
     }
-
 
 
 }

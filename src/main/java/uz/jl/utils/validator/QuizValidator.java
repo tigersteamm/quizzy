@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class QuizValidator extends BaseValidator<QuizCreateDto, QuizUpdateDto, ObjectId> {
 
-    protected QuizValidator(BaseUtils utils) {
+    public QuizValidator(BaseUtils utils) {
         super(utils);
     }
 

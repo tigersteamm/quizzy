@@ -4,7 +4,6 @@ import org.bson.types.ObjectId;
 import uz.jl.criteria.GenericCriteria;
 import uz.jl.dao.GenericDao;
 import uz.jl.entity.quiz.Quiz;
-import uz.jl.respository.AbstractRepository;
 import uz.jl.respository.GenericCrudRepository;
 
 import java.util.List;

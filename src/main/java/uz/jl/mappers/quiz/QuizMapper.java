@@ -4,7 +4,6 @@ import uz.jl.dto.GenericDto;
 import uz.jl.dto.quiz.QuizCreateDto;
 import uz.jl.dto.quiz.QuizUpdateDto;
 import uz.jl.entity.quiz.Quiz;
-import uz.jl.mappers.GenericBaseMapper;
 import uz.jl.mappers.GenericMapper;
 
 /**
