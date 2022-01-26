@@ -1,5 +1,6 @@
 package uz.jl.respository.quiz;
 
+import com.mongodb.client.model.Filters;
 import org.bson.types.ObjectId;
 import uz.jl.criteria.GenericCriteria;
 import uz.jl.dao.GenericDao;
@@ -42,5 +43,9 @@ public class QuizRepository extends GenericDao<GenericCriteria, Quiz> implements
     @Override
     public Optional<Quiz> get(ObjectId id) {
         return Optional.empty();
+    }
+
+    public Quiz solve(ObjectId key) {
+        return collection.find(Filters.eq("_id", key)).first();
     }
 }

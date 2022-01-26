@@ -2,6 +2,9 @@ package uz.jl.ui;
 
 import org.bson.types.ObjectId;
 import uz.jl.dto.quiz.QuizCreateDto;
+import uz.jl.entity.quiz.QuestionMark;
+import uz.jl.entity.quiz.Quiz;
+import uz.jl.entity.quiz.Variant;
 import uz.jl.exceptions.ApiRuntimeException;
 import uz.jl.response.Data;
 import uz.jl.response.ResponseEntity;
@@ -81,7 +84,35 @@ public class UI {
                     .duration(Integer.parseInt(count) * 30)
                     .build();
             ResponseEntity<Data<ObjectId>> response = quizService.create(dto);
-            quizService.solve(response.getData().getBody());
+
+            Quiz quiz = quizService.solve(response.getData().getBody());
+
+            long currentTime = System.nanoTime();
+            long finishTime = currentTime + quiz.getDuration() * 1000000000L;
+
+            for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
+                String correct = "";
+                Print.println(questionsMark.getQuestion().getTitle());
+                for (Variant variant : questionsMark.getQuestion().getVariants()) {
+                    Print.println(variant.getAnswer());
+                    if (variant.isCorrect())
+                        correct = variant.getAnswer();
+                }
+                String answer = Input.getStr("answer ");
+                for (Variant variant : questionsMark.getQuestion().getVariants()) {
+                    if (variant.getAnswer().equals(answer))
+                        questionsMark.setChosenAnswerId(variant.getId());
+                }
+
+                if (correct.equals(answer))
+                    questionsMark.setRight(true);
+                else
+                    questionsMark.setRight(false);
+
+                if (System.nanoTime() > finishTime)
+                    break;
+            }
+            quiz.setCompleted(true);
 
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());

@@ -57,7 +57,8 @@ public class QuizService extends AbstractService<QuizRepository, QuizMapper> imp
         return null;
     }
 
-    public void solve(ObjectId key) {
+    public Quiz solve(ObjectId key) {
+        return repository.solve(key);
 
     }
 }
