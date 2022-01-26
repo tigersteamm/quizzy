@@ -9,5 +9,7 @@ public class Application {
 
     private static void run() {
         Menu.show();
+
+
     }
 }
