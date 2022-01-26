@@ -20,12 +20,26 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class ApplicationContextHolder {
     private static final UserRepository userRepository;
     private static MongoDatabase db;
-    private static final UI ui;
+
+
+
+
+
+//    private static final UI ui;
+
+
+
 
 
     static {
         userRepository = new UserRepository(User.class);
-        ui = new UI(userService, quizService, questionService, variantService);
+
+
+
+
+
+
+//        ui = new UI(userService, quizService, questionService, variantService);
 
     }
 

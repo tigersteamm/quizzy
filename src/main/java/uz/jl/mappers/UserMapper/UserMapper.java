@@ -35,4 +35,14 @@ public class UserMapper implements GenericMapper<User, GenericDto, UserCreateDto
     public GenericDto toDto(User model) {
         return null;
     }
+
+    @Override
+    public UserCreateDto toCreateDto(User model) {
+        return null;
+    }
+
+    @Override
+    public UserUpdateDto toUpdateDto(User model) {
+        return null;
+    }
 }

@@ -27,8 +27,8 @@ public class Application {
             case "LOGOUT" -> ui.logout();
 
 
-            case "1" -> ui.loginAsAdmin();
-            case "2" -> ui.loginAsTeacher();
+//            case "1" -> ui.loginAsAdmin();
+//            case "2" -> ui.loginAsTeacher();
             case "3" -> ui.loginAsStudent();
             case "EXIT" -> {
                 Print.println(Color.GREEN, "Bye");

@@ -1,6 +1,7 @@
 package uz.jl.ui;
 
 import uz.jl.exceptions.ApiRuntimeException;
+import uz.jl.services.quiz.QuizService;
 import uz.jl.services.users.UserService;
 import uz.jl.utils.Color;
 import uz.jl.utils.Input;
@@ -15,12 +16,13 @@ public class UI {
 //    private final QuestionService questionService;
 //    private final VariantService variantService;
 
-    public UI(UserService userService, QuizService quizService, QuestionService questionService, VariantService variantService) {
-        this.userService = userService;
-        this.quizService = quizService;
-        this.questionService = questionService;
-        this.variantService = variantService;
-    }
+
+//    public UI(UserService userService, QuizService quizService, QuestionService questionService, VariantService variantService) {
+//        this.userService = userService;
+//        this.quizService = quizService;
+//        this.questionService = questionService;
+//        this.variantService = variantService;
+//    }
 
     /**
      * auth ui
@@ -33,6 +35,9 @@ public class UI {
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
+    }
+
+    public void register() {
     }
 
     public void logout() {
@@ -64,6 +69,7 @@ public class UI {
     private <T> void showResponse(T response) {
         showResponse(Color.RED, response);
     }
+
 
 
 }

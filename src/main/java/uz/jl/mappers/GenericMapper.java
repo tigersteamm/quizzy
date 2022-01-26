@@ -8,4 +8,8 @@ public interface GenericMapper<M, D, CD, UD> extends GenericBaseMapper {
     M fromUpdateDto(UD dto);
 
     D toDto(M model);
+
+    CD toCreateDto(M model);
+
+    UD toUpdateDto(M model);
 }
