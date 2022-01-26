@@ -1,6 +1,5 @@
 package uz.jl.mappers.UserMapper;
 
-import org.bson.types.ObjectId;
 import uz.jl.dto.GenericDto;
 import uz.jl.dto.user.UserCreateDto;
 import uz.jl.dto.user.UserUpdateDto;

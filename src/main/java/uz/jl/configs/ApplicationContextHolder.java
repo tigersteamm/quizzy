@@ -17,8 +17,8 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class ApplicationContextHolder {
-    private static MongoDatabase db;
     private final static UserRepository userRepository;
+    private static MongoDatabase db;
 
     static {
         userRepository = new UserRepository(User.class);

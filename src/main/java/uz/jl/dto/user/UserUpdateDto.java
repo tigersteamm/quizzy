@@ -9,5 +9,5 @@ import uz.jl.dto.GenericDto;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateDto extends GenericDto {
-    
+
 }
