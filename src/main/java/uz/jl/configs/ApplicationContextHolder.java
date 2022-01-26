@@ -9,6 +9,7 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import uz.jl.entity.auth.User;
 import uz.jl.respository.user.UserRepository;
+import uz.jl.ui.UI;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,11 +18,15 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class ApplicationContextHolder {
-    private final static UserRepository userRepository;
+    private static final UserRepository userRepository;
     private static MongoDatabase db;
+    private static final UI ui;
+
 
     static {
         userRepository = new UserRepository(User.class);
+        ui = new UI(userService, quizService, questionService, variantService);
+
     }
 
     public static <T> T getBean(Class<T> clazz) {
@@ -32,6 +37,7 @@ public class ApplicationContextHolder {
         return switch (beanName) {
             case "MongoDatabase" -> (T) db;
             case "UserRepository" -> (T) userRepository;
+            case "UI" -> (T) ui;
             default -> throw new RuntimeException("Bean Not Found");
         };
     }
