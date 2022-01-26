@@ -28,7 +28,13 @@ public class QuizService extends AbstractService<QuizRepository, QuizMapper> imp
 
     @Override
     public ResponseEntity<Data<ObjectId>> create(QuizCreateDto dto) {
-        return null;
+        try {
+            validator.validOnCreate(dto);
+            Quiz quiz = mapper.fromCreateDto(dto);
+            return new ResponseEntity<>(new Data<>(repository.create(quiz)));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     @Override
@@ -49,5 +55,9 @@ public class QuizService extends AbstractService<QuizRepository, QuizMapper> imp
     @Override
     public ResponseEntity<Data<List<Quiz>>> getList() {
         return null;
+    }
+
+    public void solve(ObjectId key) {
+
     }
 }

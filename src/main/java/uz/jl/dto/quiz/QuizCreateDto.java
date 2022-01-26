@@ -23,14 +23,16 @@ public class QuizCreateDto implements GenericBaseDto {
      * duration in seconds
      */
     private int duration;
+    private int count;
 
     @Builder(builderMethodName = "childBuilder")
-    public QuizCreateDto(String subject, String level, String language, List<QuestionMark> questionsMarks, boolean completed, int duration) {
+    public QuizCreateDto(String subject, String level, String language, List<QuestionMark> questionsMarks, boolean completed, int duration, int count) {
         this.subject = subject;
         this.level = level;
         this.language = language;
         this.questionsMarks = questionsMarks;
         this.completed = completed;
         this.duration = duration;
+        this.count = count;
     }
 }

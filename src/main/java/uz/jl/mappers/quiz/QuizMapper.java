@@ -18,6 +18,12 @@ public class QuizMapper implements GenericMapper<Quiz, GenericDto, QuizCreateDto
 
     @Override
     public Quiz fromCreateDto(QuizCreateDto dto) {
+//        return Quiz.childBuilder()
+//                .subject(Subject.getByName(dto.getSubject()))
+//                .level(Level.getByName(dto.getLevel()))
+//                .language(Language.getByCode(dto.getLanguage()))
+//                .
+//                .build();
         return null;
     }
 

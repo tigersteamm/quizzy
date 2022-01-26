@@ -27,7 +27,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class ApplicationContextHolder {
-    private static MongoDatabase db;
+    private static MongoDatabase db = db();
     private static BaseUtils utils;
 
     private static final UserValidator userValidator;
@@ -93,7 +93,7 @@ public class ApplicationContextHolder {
     }
 
 
-    private static void connect() {
+    private static MongoDatabase db() {
         ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017");
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
@@ -103,10 +103,11 @@ public class ApplicationContextHolder {
         rootLogger.setLevel(Level.OFF);
         try {
             MongoClient mongoClient = MongoClients.create(clientSettings);
-            db = mongoClient.getDatabase("quiz-app-b3");
+            return mongoClient.getDatabase("quiz-app-b3");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }

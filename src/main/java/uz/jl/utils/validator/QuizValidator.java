@@ -24,7 +24,7 @@ public class QuizValidator extends BaseValidator<QuizCreateDto, QuizUpdateDto, O
     }
 
     @Override
-    protected void validOnCreate(QuizCreateDto dto) throws IllegalArgumentException {
+    public void validOnCreate(QuizCreateDto dto) throws IllegalArgumentException {
 
     }
 
