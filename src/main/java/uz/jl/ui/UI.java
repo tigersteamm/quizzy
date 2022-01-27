@@ -159,6 +159,7 @@ public class UI {
             }
             quiz.setCompleted(true);
             SecurityHolder.session.getQuizzes().add(quiz);
+            SecurityHolder.session.setCurrentQuiz(null);
             userService.updateSession(SecurityHolder.session);
 
         } catch (ApiRuntimeException e) {
