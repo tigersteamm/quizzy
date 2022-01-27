@@ -55,7 +55,7 @@ public class ApplicationContextHolder {
 
 
     static {
-        connect();
+//        connect();
         utils = new BaseUtils();
 
         userValidator = new UserValidator(utils);

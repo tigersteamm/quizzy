@@ -76,43 +76,46 @@ public class UI {
             String level = Input.getStr("level ");
             String count = Input.getStr("count ");
 
-            QuizCreateDto dto = QuizCreateDto.childBuilder()
-                    .subject(subject)
-                    .level(level)
-                    .language(language)
-                    .count(Integer.parseInt(count))
-                    .duration(Integer.parseInt(count) * 30)
-                    .build();
-            ResponseEntity<Data<ObjectId>> response = quizService.create(dto);
 
-            Quiz quiz = quizService.get(response.getData().getBody());
 
-            long currentTime = System.nanoTime();
-            long finishTime = currentTime + quiz.getDuration() * 1000000000L;
 
-            for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
-                String correct = "";
-                Print.println(questionsMark.getQuestion().getTitle());
-                for (Variant variant : questionsMark.getQuestion().getVariants()) {
-                    Print.println(variant.getAnswer());
-                    if (variant.isCorrect())
-                        correct = variant.getAnswer();
-                }
-                String answer = Input.getStr("answer ");
-                for (Variant variant : questionsMark.getQuestion().getVariants()) {
-                    if (variant.getAnswer().equals(answer))
-                        questionsMark.setChosenAnswerId(variant.getId());
-                }
-
-                if (correct.equals(answer))
-                    questionsMark.setRight(true);
-                else
-                    questionsMark.setRight(false);
-
-                if (System.nanoTime() > finishTime)
-                    break;
-            }
-            quiz.setCompleted(true);
+//            QuizCreateDto dto = QuizCreateDto.childBuilder()
+//                    .subject(subject)
+//                    .level(level)
+//                    .language(language)
+//                    .count(Integer.parseInt(count))
+//                    .duration(Integer.parseInt(count) * 30)
+//                    .build();
+//            ResponseEntity<Data<ObjectId>> response = quizService.create(dto);
+//
+//            Quiz quiz = quizService.get(response.getData().getBody()).getData().getBody();
+//
+//            long currentTime = System.nanoTime();
+//            long finishTime = currentTime + quiz.getDuration() * 1000000000L;
+//
+//            for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
+//                String correct = "";
+//                Print.println(questionsMark.getQuestion().getTitle());
+//                for (Variant variant : questionsMark.getQuestion().getVariants()) {
+//                    Print.println(variant.getAnswer());
+//                    if (variant.isCorrect())
+//                        correct = variant.getAnswer();
+//                }
+//                String answer = Input.getStr("answer ");
+//                for (Variant variant : questionsMark.getQuestion().getVariants()) {
+//                    if (variant.getAnswer().equals(answer))
+//                        questionsMark.setChosenAnswerId(variant.getId());
+//                }
+//
+//                if (correct.equals(answer))
+//                    questionsMark.setRight(true);
+//                else
+//                    questionsMark.setRight(false);
+//
+//                if (System.nanoTime() > finishTime)
+//                    break;
+//            }
+//            quiz.setCompleted(true);
 
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
