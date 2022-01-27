@@ -14,24 +14,25 @@ import uz.jl.services.GenericCrudService;
 import uz.jl.utils.validator.QuestionValidator;
 
 import java.util.List;
+import java.util.Optional;
 
 public class QuestionService extends AbstractService<QuestionRepository, QuestionMapper> implements GenericCrudService<Question, QuestionCreateDto, QuestionUpdateDto, ObjectId> {
 
-    private final QuestionValidator validator;
+//    private final QuestionValidator validator;
 
     public QuestionService(QuestionRepository repository, QuestionMapper mapper, QuestionValidator validator) {
         super(repository, mapper);
-        this.validator = validator;
+//        this.validator = validator;
     }
 
     @Override
     public ResponseEntity<Data<ObjectId>> create(QuestionCreateDto dto) {
         try {
-            validator.validOnCreate(dto);
+//            validator.validOnCreate(dto);
             Question question = mapper.fromCreateDto(dto);
             return new ResponseEntity<>(new Data<>(repository.create(question)));
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -56,4 +57,12 @@ public class QuestionService extends AbstractService<QuestionRepository, Questio
     public ResponseEntity<Data<List<Question>>> getList() {
         return null;
     }
+
+    public Question getRandom(String language,
+                              String subject,
+                              String level) {
+        return repository.getRandom(language, subject, level);
+    }
+
+
 }

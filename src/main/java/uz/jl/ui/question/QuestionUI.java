@@ -13,16 +13,33 @@ import uz.jl.utils.Input;
 import uz.jl.utils.Print;
 
 import javax.swing.text.StyledEditorKit;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class QuestionUI {
     private final QuestionService questionService;
 
     public QuestionUI(QuestionService questionService) {
         this.questionService = questionService;
+    }
+
+    private String randomNumber() {
+        return String.valueOf(new Random().nextInt(123456789));
+    }
+
+    public void createRandomQuestion() {
+        try {
+            QuestionCreateDto dto = QuestionCreateDto.childBuilder()
+                    .title(randomNumber())
+                    .level("HARD")
+                    .language("RU")
+                    .subject("ENGLISH")
+                    .variants(createRandomVariants())
+                    .build();
+            ResponseEntity<Data<ObjectId>> response = questionService.create(dto);
+            Print.println(Color.GREEN, response.getData().getBody());
+        } catch (ApiRuntimeException e) {
+            showResponse(e.getMessage());
+        }
     }
 
     public void questionCreate() {
@@ -42,7 +59,7 @@ public class QuestionUI {
     }
 
     public void questionDelete() {
-        String id =Input.getStr("QuestionId : ");
+        String id = Input.getStr("QuestionId : ");
         ObjectId id1 = new ObjectId(id);
         ResponseEntity<Data<Void>> response = questionService.delete(id1);
         Print.println(Color.GREEN, response.getData().getBody());
@@ -59,6 +76,15 @@ public class QuestionUI {
             Variant variant = new Variant(new ObjectId(), new Date(), false, variantAnswer, variantCorrect);
             variants.add(variant);
         }
+        return variants;
+    }
+
+    private List<Variant> createRandomVariants() {
+        List<Variant> variants = new ArrayList<>();
+        String variantAnswer = "123";
+        boolean variantCorrect = false;
+        Variant variant = new Variant(new ObjectId(), new Date(), false, variantAnswer, variantCorrect);
+        variants.add(variant);
         return variants;
     }
 

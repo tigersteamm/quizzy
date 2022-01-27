@@ -1,14 +1,19 @@
 package uz.jl.respository.question;
 
+import com.mongodb.client.model.Filters;
 import org.bson.types.ObjectId;
 import uz.jl.criteria.GenericCriteria;
 import uz.jl.dao.GenericDao;
 import uz.jl.entity.quiz.Question;
 import uz.jl.respository.GenericCrudRepository;
-import uz.jl.ui.question.QuestionUI;
+import uz.jl.utils.Input;
 
+
+import java.sql.Types;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 
 public class QuestionRepository extends GenericDao<GenericCriteria, Question> implements
         GenericCrudRepository<Question, ObjectId> {
@@ -30,7 +35,7 @@ public class QuestionRepository extends GenericDao<GenericCriteria, Question> im
 
     @Override
     public void delete(ObjectId id) {
-
+//        collection.deleteOne().
     }
 
     @Override
@@ -42,4 +47,18 @@ public class QuestionRepository extends GenericDao<GenericCriteria, Question> im
     public Optional<Question> get(ObjectId id) {
         return Optional.empty();
     }
+
+    public Question getRandom(String language,
+                              String subject,
+                              String level) {
+        int count = (int) collection.countDocuments();
+        int i = new Random().nextInt(count);
+        return collection.find(Filters.and(
+                Filters.eq("language", language),
+                Filters.eq("subject", subject),
+                Filters.eq("level", level)
+        )).skip(i).first();
+    }
+
+
 }
