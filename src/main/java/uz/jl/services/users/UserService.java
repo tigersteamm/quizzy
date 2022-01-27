@@ -81,4 +81,7 @@ public class UserService extends AbstractService<UserRepository, UserMapper> imp
     }
 
 
+    public void updateSession(User session) {
+        repository.updateSession(session);
+    }
 }

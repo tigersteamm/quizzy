@@ -30,15 +30,17 @@ public class Application {
             case "REGISTER" -> ui.register();
             case "LOGOUT" -> ui.logout();
 
-            case "CREATETEACHER"->ui.userCreate();
-            case "UPDATETEACHER"->ui.userUpdate();
-            case "DELETETEACHER"->ui.userDelete();
+            case "CREATETEACHER" -> ui.userCreate();
+            case "UPDATETEACHER" -> ui.userUpdate();
+            case "DELETETEACHER" -> ui.userDelete();
 
-
-            case "SOLVE_QUIZ" -> ui.solveQuiz();
+            case "CREATE_QUESTION" -> questionUI.questionCreate();
             case "MY_QUIZZES" -> ui.myQuizzes();
 
+            case "SOLVE_QUIZ" -> ui.solveQuiz();
 
+
+            case "1" -> questionUI.createRandomQuestion();
 //            case "1" -> ui.loginAsAdmin();
 //            case "2" -> ui.loginAsTeacher();
             case "3" -> ui.loginAsStudent();
@@ -47,7 +49,7 @@ public class Application {
                 return;
             }
             default -> Print.println(Color.RED, "Wrong choice");
-
         }
+        run();
     }
 }

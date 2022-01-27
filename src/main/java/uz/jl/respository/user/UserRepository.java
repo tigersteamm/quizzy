@@ -41,8 +41,7 @@ public class UserRepository extends GenericDao<GenericCriteria, User> implements
 
     public User login(String username, String password) {
         Bson findibleUserId = new Document("username", username);
-        FindIterable<User> users = collection.find(findibleUserId);
-        User session = User.childBuilder().username(users.iterator().next().getUsername()).password(users.iterator().next().getPassword()).language(users.iterator().next().getLanguage()).quizzes(users.iterator().next().getQuizzes()).role(users.iterator().next().getRole()).build();
+        User session = collection.find(findibleUserId).first();
         if (Objects.isNull(session) || !Objects.equals(session.getPassword(), password)) {
             Print.println(Color.RED, "BAD CREDENTIALS");
         }
@@ -75,5 +74,10 @@ public class UserRepository extends GenericDao<GenericCriteria, User> implements
     public Optional<User> get(ObjectId id) {
         User user = collection.find(Filters.eq("_id", id)).first();
         return Objects.isNull(user) ? Optional.empty() : Optional.of(user);
+    }
+
+    public void updateSession(User session) {
+
+        collection.updateOne(Filters.eq("_id", session.getId()), Updates.(session));
     }
 }

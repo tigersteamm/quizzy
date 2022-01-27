@@ -28,7 +28,7 @@ public class Menu {
                 Print.println("");
 
             } else if (session.getRole().equals(Role.TEACHER)) {
-                Print.println("");
+                Print.println("CREATE_QUESTION");
                 Print.println("");
                 Print.println("");
                 Print.println("");

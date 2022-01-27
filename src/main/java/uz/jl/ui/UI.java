@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import org.bson.types.ObjectId;
 import uz.jl.dto.quiz.QuizCreateDto;
 import uz.jl.dto.user.UserCreateDto;
+import uz.jl.dto.user.UserUpdateDto;
 import uz.jl.entity.quiz.Question;
 import uz.jl.entity.quiz.QuestionMark;
 import uz.jl.entity.quiz.Quiz;
@@ -47,10 +48,9 @@ public class UI {
      * auth ui
      */
     //------------------------------------------AuthUI----------------------------------------------------------------------------------------
-
     public void register() {
         UserCreateDto dto = UserCreateDto.childBuilder().username(Input.getStr("Username: ")).password(Input.getStr("Password:")).language(Input.getStr("Language:")).build();
-        ResponseEntity<Data<ObjectId>> response = userService.create(dto);
+        ResponseEntity<Data<ObjectId>> response = userService.register(dto);
         Print.println(response.getData().getBody());
     }
 
@@ -58,7 +58,8 @@ public class UI {
         String username = Input.getStr("Username: ");
         String password = Input.getStr("Password: ");
         ResponseEntity<Data<Boolean>> response = userService.login(username, password);
-        Print.println(SecurityHolder.session.getUsername() + " " + response.getData().getBody());
+        System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(SecurityHolder.session));
+//        Print.println(SecurityHolder.session.getUsername() + " " + response.getData().getBody());
     }
 
     public void logout() {
@@ -68,35 +69,37 @@ public class UI {
     public void userCreate() {
         try {
             String username = Input.getStr("username: ");
-            String fullName=Input.getStr("FullName: ");
+            String fullName = Input.getStr("FullName: ");
             String password = Input.getStr("password: ");
             String language = Input.getStr("language: ");
-            UserCreateDto dto=new UserCreateDto(username,fullName,password,language);
+            UserCreateDto dto = new UserCreateDto(username, fullName, password, language);
             ResponseEntity<Data<ObjectId>> dataResponseEntity = userService.create(dto);
             showResponse(dataResponseEntity.getData().getBody());
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
     }
+
     public void userUpdate() {
         try {
-            String id=Input.getStr("UserId");
+            String id = Input.getStr("UserId");
             String username = Input.getStr("username: ");
-            String fullName=Input.getStr("FullName: ");
+            String fullName = Input.getStr("FullName: ");
             String language = Input.getStr("language: ");
-            UserUpdateDto dto=new UserUpdateDto(id,username,fullName,language);
+            UserUpdateDto dto = new UserUpdateDto(id, username, fullName, language);
             ResponseEntity<Data<Void>> update = userService.update(dto);
             showResponse(update.getData().getBody());
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
     }
-    public void userDelete(){
-        try{
-            String id=Input.getStr("UserId:");
-               userService.delete(new ObjectId(id));
-        }catch (ApiRuntimeException e){
-            showResponse (e.getMessage());
+
+    public void userDelete() {
+        try {
+            String id = Input.getStr("UserId:");
+            userService.delete(new ObjectId(id));
+        } catch (ApiRuntimeException e) {
+            showResponse(e.getMessage());
         }
     }
 
@@ -120,6 +123,7 @@ public class UI {
                     .level(Level.valueOf(level))
                     .questionsMarks(new ArrayList<>())
                     .build();
+
             for (int i = 0; i < Integer.parseInt(count); i++) {
                 Question random = questionService.getRandom(language, subject, level);
                 QuestionMark questionMark = QuestionMark.childBuilder()
@@ -128,9 +132,9 @@ public class UI {
                 quiz.getQuestionsMarks().add(questionMark);
             }
 
-//            SecurityHolder.session.setCurrentQuiz(quiz);
+            SecurityHolder.session.setCurrentQuiz(quiz);
 
-            System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(quiz));
+//            System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(quiz));
 
 
 //            QuizCreateDto dto = QuizCreateDto.childBuilder()
@@ -144,32 +148,34 @@ public class UI {
 //
 //            Quiz quiz = quizService.get(response.getData().getBody()).getData().getBody();
 //
-//            long currentTime = System.nanoTime();
-//            long finishTime = currentTime + quiz.getDuration() * 1000000000L;
+            long currentTime = System.nanoTime();
+            long finishTime = currentTime + quiz.getDuration() * 1000000000L;
 //
-//            for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
-//                String correct = "";
-//                Print.println(questionsMark.getQuestion().getTitle());
-//                for (Variant variant : questionsMark.getQuestion().getVariants()) {
-//                    Print.println(variant.getAnswer());
-//                    if (variant.isCorrect())
-//                        correct = variant.getAnswer();
-//                }
-//                String answer = Input.getStr("answer ");
-//                for (Variant variant : questionsMark.getQuestion().getVariants()) {
-//                    if (variant.getAnswer().equals(answer))
-//                        questionsMark.setChosenAnswerId(variant.getId());
-//                }
-//
-//                if (correct.equals(answer))
-//                    questionsMark.setRight(true);
-//                else
-//                    questionsMark.setRight(false);
-//
+            for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
+                String correct = "";
+                Print.println(questionsMark.getQuestion().getTitle());
+                for (Variant variant : questionsMark.getQuestion().getVariants()) {
+                    Print.println(variant.getAnswer());
+                    if (variant.isCorrect())
+                        correct = variant.getAnswer();
+                }
+                String answer = Input.getStr("answer ");
+                for (Variant variant : questionsMark.getQuestion().getVariants()) {
+                    if (variant.getAnswer().equals(answer))
+                        questionsMark.setChosenAnswerId(variant.getId());
+                }
+
+                if (correct.equals(answer))
+                    questionsMark.setRight(true);
+                else
+                    questionsMark.setRight(false);
+
 //                if (System.nanoTime() > finishTime)
 //                    break;
-//            }
-//            quiz.setCompleted(true);
+            }
+            quiz.setCompleted(true);
+            SecurityHolder.session.getQuizzes().add(quiz);
+            userService.updateSession(SecurityHolder.session);
 
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
