@@ -4,6 +4,8 @@ import lombok.*;
 import org.bson.types.ObjectId;
 import uz.jl.entity.Auditable;
 import uz.jl.enums.Language.Language;
+import uz.jl.enums.Level;
+import uz.jl.enums.Subject;
 
 import java.util.Date;
 import java.util.List;
@@ -16,8 +18,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Quiz extends Auditable {
-    private String subject;
-    private String level;
+    private Subject subject;
+    private Level level;
     private Language language;
     private List<QuestionMark> questionsMarks;
     private boolean completed;
@@ -27,7 +29,7 @@ public class Quiz extends Auditable {
     private int duration;
 
     @Builder(builderMethodName = "childBuilder")
-    public Quiz(ObjectId id, Date createdAt, boolean deleted, String subject, String level, Language language, List<QuestionMark> questionsMarks, boolean completed, int duration) {
+    public Quiz(ObjectId id, Date createdAt, boolean deleted, Subject subject, Level level, Language language, List<QuestionMark> questionsMarks, boolean completed, int duration) {
         super(id, createdAt, deleted);
         this.subject = subject;
         this.level = level;
@@ -36,6 +38,7 @@ public class Quiz extends Auditable {
         this.completed = completed;
         this.duration = duration;
     }
+
 
     @Override
     public boolean equals(Object o) {

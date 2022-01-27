@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import uz.jl.entity.auth.User;
+import uz.jl.entity.quiz.Question;
 import uz.jl.entity.quiz.Quiz;
 import uz.jl.mappers.UserMapper.UserMapper;
 import uz.jl.mappers.questionMapper.QuestionMapper;
@@ -44,14 +45,14 @@ public class ApplicationContextHolder {
     private static final QuizMapper quizMapper;
 
     private static final UserRepository userRepository;
-    private static  QuestionRepository questionRepository;
+    private static QuestionRepository questionRepository;
     private static final QuizRepository quizRepository;
 
     private static final UserService userService;
     private static final QuestionService questionService;
     private static final QuizService quizService;
     private static final UI ui;
-    private static  QuestionUI questionUI;
+    private static QuestionUI questionUI;
 
 
     static {
@@ -60,19 +61,22 @@ public class ApplicationContextHolder {
 
         userValidator = new UserValidator(utils);
         quizValidator = new QuizValidator(utils);
+        questionValidator = new QuestionValidator(utils);
 
         userMapper = new UserMapper();
         quizMapper = new QuizMapper();
+        questionMapper = new QuestionMapper();
 
         userRepository = new UserRepository(User.class);
         quizRepository = new QuizRepository(Quiz.class);
+        questionRepository = new QuestionRepository(Question.class);
 
         userService = new UserService(userRepository, userMapper, userValidator);
-        questionService = new QuestionService(questionRepository, questionMapper, questionValidator);
         quizService = new QuizService(quizRepository, quizMapper, quizValidator);
+        questionService = new QuestionService(questionRepository, questionMapper, questionValidator);
 
 
-        ui = new UI(userService, quizService);
+        ui = new UI(userService, quizService, questionService);
         questionUI = new QuestionUI(questionService);
 
     }
@@ -89,15 +93,19 @@ public class ApplicationContextHolder {
 
             case "UserValidator" -> (T) userValidator;
             case "QuizValidator" -> (T) quizValidator;
+            case "QuestionValidator" -> (T) questionValidator;
 
             case "UserMapper" -> (T) userMapper;
             case "QuizMapper" -> (T) quizMapper;
+            case "QuestionMapper" -> (T) questionMapper;
 
             case "UserRepository" -> (T) userRepository;
             case "QuizRepository" -> (T) quizRepository;
+            case "QuestionRepository" -> (T) questionRepository;
 
             case "UserService" -> (T) userService;
             case "QuizService" -> (T) quizService;
+            case "QuestionService" -> (T) questionService;
 
 
             case "UI" -> (T) ui;

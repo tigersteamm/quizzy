@@ -10,7 +10,7 @@ import uz.jl.utils.BaseUtils;
 
 public class QuestionValidator extends BaseValidator<QuestionCreateDto, QuestionUpdateDto, ObjectId> {
 
-    protected QuestionValidator(BaseUtils utils) {super(utils);}
+    public QuestionValidator(BaseUtils utils) {super(utils);}
 
     @Override
     protected void validKey(ObjectId key) throws IllegalArgumentException {}

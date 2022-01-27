@@ -7,10 +7,17 @@ import uz.jl.dto.GenericBaseDto;
 @Setter
 @ToString(callSuper = true)
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserCreateDto implements GenericBaseDto {
     private String username;
     private String password;
     private String role;
     private String language;
+
+    @Builder(builderMethodName = "childBuilder")
+    public UserCreateDto(String username, String password, String role, String language) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.language = language;
+    }
 }
