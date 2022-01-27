@@ -85,7 +85,7 @@ public class UI {
                     .build();
             ResponseEntity<Data<ObjectId>> response = quizService.create(dto);
 
-            Quiz quiz = quizService.solve(response.getData().getBody());
+            Quiz quiz = quizService.get(response.getData().getBody());
 
             long currentTime = System.nanoTime();
             long finishTime = currentTime + quiz.getDuration() * 1000000000L;

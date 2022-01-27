@@ -49,7 +49,7 @@ public class QuizService extends AbstractService<QuizRepository, QuizMapper> imp
 
     @Override
     public ResponseEntity<Data<Quiz>> get(ObjectId id) {
-        return null;
+        return new ResponseEntity<>(new Data<>(repository.get(id)));
     }
 
     @Override

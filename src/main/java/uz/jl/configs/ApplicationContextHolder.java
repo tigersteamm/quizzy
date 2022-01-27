@@ -28,7 +28,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class ApplicationContextHolder {
     private static MongoDatabase db = db();
-    private static BaseUtils utils;
+    private static final BaseUtils utils;
 
     private static final UserValidator userValidator;
     private static final QuizValidator quizValidator;
