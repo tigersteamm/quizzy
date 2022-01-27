@@ -57,8 +57,8 @@ public class QuestionService extends AbstractService<QuestionRepository, Questio
     }
 
     public Question getRandom(String language,
-                              String subject,
-                              String level) {
+                                     String subject,
+                                     String level) {
         return repository.getRandom(language, subject, level);
     }
 

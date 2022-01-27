@@ -4,13 +4,7 @@ import com.google.gson.GsonBuilder;
 import org.bson.types.ObjectId;
 import uz.jl.dto.user.UserCreateDto;
 import uz.jl.dto.user.UserUpdateDto;
-import uz.jl.entity.quiz.Question;
-import uz.jl.entity.quiz.QuestionMark;
 import uz.jl.entity.quiz.Quiz;
-import uz.jl.entity.quiz.Variant;
-import uz.jl.enums.Language.Language;
-import uz.jl.enums.Level;
-import uz.jl.enums.Subject;
 import uz.jl.exceptions.ApiRuntimeException;
 import uz.jl.response.Data;
 import uz.jl.response.ResponseEntity;
@@ -22,7 +16,6 @@ import uz.jl.utils.Color;
 import uz.jl.utils.Input;
 import uz.jl.utils.Print;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -115,57 +108,14 @@ public class UI {
             String level = Input.getStr("level ");
             String count = Input.getStr("count ");
 
-            Quiz quiz = Quiz.childBuilder()
-                    .language(Language.valueOf(language))
-                    .subject(Subject.valueOf(subject))
-                    .level(Level.valueOf(level))
-                    .questionsMarks(new ArrayList<>())
-                    .build();
-
-            for (int i = 0; i < Integer.parseInt(count); i++) {
-                Question random = questionService.getRandom(language, subject, level);
-                QuestionMark questionMark = QuestionMark.childBuilder()
-                        .question(random).build();
-
-                quiz.getQuestionsMarks().add(questionMark);
-            }
-
-            SecurityHolder.session.setCurrentQuiz(quiz);
-
-            long currentTime = System.nanoTime();
-            long finishTime = currentTime + quiz.getDuration() * 1000000000L;
-
-            for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
-                String correct = "";
-                Print.println(questionsMark.getQuestion().getTitle());
-                for (Variant variant : questionsMark.getQuestion().getVariants()) {
-                    Print.println(variant.getAnswer());
-                    if (variant.isCorrect())
-                        correct = variant.getAnswer();
-                }
-                String answer = Input.getStr("answer ");
-                for (Variant variant : questionsMark.getQuestion().getVariants()) {
-                    if (variant.getAnswer().equals(answer))
-                        questionsMark.setChosenAnswerId(variant.getId());
-                }
-
-                if (correct.equals(answer))
-                    questionsMark.setRight(true);
-                else
-                    questionsMark.setRight(false);
-
-//                if (System.nanoTime() > finishTime)
-//                    break;
-            }
-            quiz.setCompleted(true);
-            SecurityHolder.session.getQuizzes().add(quiz);
-            SecurityHolder.session.setCurrentQuiz(null);
+            Quiz quiz = quizService.create(language, subject, level, count);
+            quizService.solve(quiz);
             userService.updateSession(SecurityHolder.session);
-
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
     }
+
 
     public void myQuizzes() {
         try {
