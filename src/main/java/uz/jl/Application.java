@@ -24,11 +24,15 @@ public class Application {
     private static void run() {
         Menu.show();
 
-        String choice = Input.getStr("Enter your choice: ").toUpperCase(Locale.ROOT);
+        String choice = Input.getStr(">>>>").toUpperCase(Locale.ROOT);
         switch (choice) {
             case "LOGIN" -> ui.login();
             case "REGISTER" -> ui.register();
             case "LOGOUT" -> ui.logout();
+
+
+            case "SOLVE_QUIZ" -> ui.solveQuiz();
+            case "MY_QUIZZES" -> ui.myQuizzes();
 
 
 //            case "1" -> ui.loginAsAdmin();
