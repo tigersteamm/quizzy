@@ -26,6 +26,7 @@ import uz.jl.utils.Input;
 import uz.jl.utils.Print;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author D4uranbek ср. 20:08. 26.01.2022
@@ -184,7 +185,8 @@ public class UI {
 
     public void myQuizzes() {
         try {
-            quizService.getList();
+            ResponseEntity<Data<List<Quiz>>> quizzes = userService.getQuizzes();
+            Print.println(quizzes.getData().getBody());
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }

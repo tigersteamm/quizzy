@@ -1,5 +1,8 @@
 package uz.jl.respository.user;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -9,18 +12,17 @@ import org.bson.types.ObjectId;
 import uz.jl.criteria.GenericCriteria;
 import uz.jl.dao.GenericDao;
 import uz.jl.entity.auth.User;
+import uz.jl.entity.quiz.Quiz;
 import uz.jl.enums.Role.Role;
 import uz.jl.respository.GenericCrudRepository;
+import uz.jl.security.SecurityHolder;
 import uz.jl.utils.Color;
 import uz.jl.utils.Print;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+import java.util.*;
 
 
-public class UserRepository extends GenericDao<GenericCriteria, User> implements
-        GenericCrudRepository<User, ObjectId> {
+public class UserRepository extends GenericDao<GenericCriteria, User> implements GenericCrudRepository<User, ObjectId> {
 
     public UserRepository(Class<User> clazz) {
         super(clazz);
@@ -51,11 +53,7 @@ public class UserRepository extends GenericDao<GenericCriteria, User> implements
 
     @Override
     public void update(User model) {
-        collection.updateOne(Filters.and(Filters.eq("_id", new ObjectId(model.getId().toHexString())), Filters.eq("role", "TEACHER")), Updates.combine(
-                Updates.set("username", model.getUsername()),
-                Updates.set("password", model.getFullName()),
-                Updates.set("language", model.getLanguage())
-        ));
+        collection.updateOne(Filters.and(Filters.eq("_id", new ObjectId(model.getId().toHexString())), Filters.eq("role", "TEACHER")), Updates.combine(Updates.set("username", model.getUsername()), Updates.set("password", model.getFullName()), Updates.set("language", model.getLanguage())));
     }
 
     @Override
@@ -77,7 +75,16 @@ public class UserRepository extends GenericDao<GenericCriteria, User> implements
     }
 
     public void updateSession(User session) {
+        ObjectMapper mapper = new ObjectMapper();
+        HashMap<String, Object> hashMap = mapper.convertValue(session, new TypeReference<>() {
+        });
+        BasicDBObject basicDBObject = new BasicDBObject(hashMap);
+        BasicDBObject query = new BasicDBObject("$set", basicDBObject);
+        collection.updateOne(Filters.eq("_id", session.getId()), query);
+    }
 
-        collection.updateOne(Filters.eq("_id", session.getId()), Updates.(session));
+    public List<Quiz> getQuizzes() {
+        User user = collection.find(Filters.eq("_id", SecurityHolder.session.getId())).first();
+        return user.getQuizzes();
     }
 }

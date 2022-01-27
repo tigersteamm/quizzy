@@ -11,6 +11,8 @@ import uz.jl.enums.Role.Role;
 import uz.jl.enums.Status.Status;
 import uz.jl.mappers.GenericMapper;
 
+import java.util.ArrayList;
+
 public class UserMapper implements GenericMapper<User, GenericDto, UserCreateDto, UserUpdateDto> {
     @Override
     public User fromDto(GenericDto dto) {
@@ -25,6 +27,8 @@ public class UserMapper implements GenericMapper<User, GenericDto, UserCreateDto
                 .role(Role.getByName(dto.getRole()))
                 .status(Status.NO_ACTIVE)
                 .language(Language.getByCode(dto.getLanguage()))
+                .quizzes(new ArrayList<>())
+                .currentQuiz(null)
                 .build();
     }
 
@@ -33,7 +37,7 @@ public class UserMapper implements GenericMapper<User, GenericDto, UserCreateDto
         return User.childBuilder().id(new ObjectId(dto.getId()))
                 .username(dto.getUsername())
                 .fullName(dto.getFullName())
-                        .language(Language.getByCode(dto.getLanguage())).
+                .language(Language.getByCode(dto.getLanguage())).
                 build();
     }
 

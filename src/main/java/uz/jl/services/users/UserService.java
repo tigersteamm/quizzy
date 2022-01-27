@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import uz.jl.dto.user.UserCreateDto;
 import uz.jl.dto.user.UserUpdateDto;
 import uz.jl.entity.auth.User;
+import uz.jl.entity.quiz.Quiz;
 import uz.jl.mappers.UserMapper.UserMapper;
 import uz.jl.response.Data;
 import uz.jl.response.ResponseEntity;
@@ -83,5 +84,10 @@ public class UserService extends AbstractService<UserRepository, UserMapper> imp
 
     public void updateSession(User session) {
         repository.updateSession(session);
+    }
+
+    public ResponseEntity<Data<List<Quiz>>> getQuizzes() {
+        List<Quiz> quizzes = repository.getQuizzes();
+        return new ResponseEntity<>(new Data<>(quizzes));
     }
 }
