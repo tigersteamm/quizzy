@@ -84,7 +84,7 @@ public class UI {
     }
     public void userDelete(){
         try{
-            String id=Input.getStr("UserId");
+            String id=Input.getStr("UserId:");
                userService.delete(new ObjectId(id));
         }catch (ApiRuntimeException e){
             showResponse (e.getMessage());
