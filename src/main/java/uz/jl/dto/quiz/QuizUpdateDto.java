@@ -1,6 +1,9 @@
 package uz.jl.dto.quiz;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import uz.jl.dto.GenericDto;
 
 /**

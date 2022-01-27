@@ -17,6 +17,7 @@ public class UserDto extends GenericDto {
     private Status status;
     private Language language;
     private List<Quiz> quizzes;
+
     @Builder(builderMethodName = "childBuilder")
     public UserDto(String id, String username, String fullName, String password, Role role, Status status, Language language, List<Quiz> quizzes) {
         super(id);

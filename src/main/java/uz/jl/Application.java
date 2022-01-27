@@ -1,7 +1,6 @@
 package uz.jl;
 
 import uz.jl.configs.ApplicationContextHolder;
-import uz.jl.services.question.QuestionService;
 import uz.jl.ui.Menu;
 import uz.jl.ui.UI;
 import uz.jl.ui.question.QuestionUI;
@@ -17,7 +16,6 @@ public class Application {
 
 
     public static void main(String[] args) {
-        //questionUI.questionCreate();
         run();
     }
 
@@ -35,12 +33,12 @@ public class Application {
             case "DELETETEACHER" -> ui.userDelete();
 
             case "CREATE_QUESTION" -> questionUI.questionCreate();
-            case "MY_QUIZZES" -> ui.myQuizzes();
 
+            case "MY_QUIZZES" -> ui.myQuizzes();
             case "SOLVE_QUIZ" -> ui.solveQuiz();
 
 
-            case "1" -> questionUI.createRandomQuestion();
+            case "1" -> questionUI.random100();
 //            case "1" -> ui.loginAsAdmin();
 //            case "2" -> ui.loginAsTeacher();
             case "3" -> ui.loginAsStudent();

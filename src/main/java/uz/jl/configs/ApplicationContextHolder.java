@@ -33,25 +33,21 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class ApplicationContextHolder {
-    private static MongoDatabase db = db();
     private static final BaseUtils utils;
-
     private static final UserValidator userValidator;
-    private static QuestionValidator questionValidator;
     private static final QuizValidator quizValidator;
-
     private static final UserMapper userMapper;
-    private static QuestionMapper questionMapper;
     private static final QuizMapper quizMapper;
-
     private static final UserRepository userRepository;
-    private static QuestionRepository questionRepository;
     private static final QuizRepository quizRepository;
-
     private static final UserService userService;
     private static final QuestionService questionService;
     private static final QuizService quizService;
     private static final UI ui;
+    private static MongoDatabase db = db();
+    private static QuestionValidator questionValidator;
+    private static QuestionMapper questionMapper;
+    private static QuestionRepository questionRepository;
     private static QuestionUI questionUI;
 
 

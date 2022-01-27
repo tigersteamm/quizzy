@@ -17,31 +17,31 @@ public class Menu {
             Print.println("REGISTER");
         } else {
             if (session.getRole().equals(Role.ADMIN)) {
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
 
             } else if (session.getRole().equals(Role.TEACHER)) {
                 Print.println("CREATE_QUESTION");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
-                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
 
             } else if (session.getRole().equals(Role.STUDENT)) {
                 Print.println("SOLVE_QUIZ");
                 Print.println("MY_QUIZZES");
-                Print.println("");
-                Print.println("");
-                Print.println("");
+//                Print.println("");
+//                Print.println("");
+//                Print.println("");
 
             }
 

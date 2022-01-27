@@ -6,12 +6,8 @@ import uz.jl.criteria.GenericCriteria;
 import uz.jl.dao.GenericDao;
 import uz.jl.entity.quiz.Question;
 import uz.jl.respository.GenericCrudRepository;
-import uz.jl.utils.Input;
 
-
-import java.sql.Types;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 

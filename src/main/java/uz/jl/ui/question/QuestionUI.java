@@ -12,7 +12,6 @@ import uz.jl.utils.Color;
 import uz.jl.utils.Input;
 import uz.jl.utils.Print;
 
-import javax.swing.text.StyledEditorKit;
 import java.util.*;
 
 public class QuestionUI {
@@ -20,26 +19,6 @@ public class QuestionUI {
 
     public QuestionUI(QuestionService questionService) {
         this.questionService = questionService;
-    }
-
-    private String randomNumber() {
-        return String.valueOf(new Random().nextInt(123456789));
-    }
-
-    public void createRandomQuestion() {
-        try {
-            QuestionCreateDto dto = QuestionCreateDto.childBuilder()
-                    .title(randomNumber())
-                    .level("HARD")
-                    .language("RU")
-                    .subject("ENGLISH")
-                    .variants(createRandomVariants())
-                    .build();
-            ResponseEntity<Data<ObjectId>> response = questionService.create(dto);
-            Print.println(Color.GREEN, response.getData().getBody());
-        } catch (ApiRuntimeException e) {
-            showResponse(e.getMessage());
-        }
     }
 
     public void questionCreate() {
@@ -79,13 +58,44 @@ public class QuestionUI {
         return variants;
     }
 
+
+    private String randomNumber() {
+        return String.valueOf(new Random().nextInt(99999999));
+    }
+
+    public void createRandomQuestion() {
+        try {
+            QuestionCreateDto dto = QuestionCreateDto.childBuilder()
+                    .title(randomNumber())
+                    .level("HARD")
+                    .language("RU")
+                    .subject("ENGLISH")
+                    .variants(createRandomVariants())
+                    .build();
+            ResponseEntity<Data<ObjectId>> response = questionService.create(dto);
+            Print.println(Color.GREEN, response.getData().getBody());
+        } catch (ApiRuntimeException e) {
+            showResponse(e.getMessage());
+        }
+    }
+
     private List<Variant> createRandomVariants() {
         List<Variant> variants = new ArrayList<>();
-        String variantAnswer = "123";
-        boolean variantCorrect = false;
-        Variant variant = new Variant(new ObjectId(), new Date(), false, variantAnswer, variantCorrect);
-        variants.add(variant);
+        Variant variant1 = new Variant(new ObjectId(), new Date(), false, "1", true);
+        Variant variant2 = new Variant(new ObjectId(), new Date(), false, "2", false);
+        Variant variant3 = new Variant(new ObjectId(), new Date(), false, "3", false);
+        Variant variant4 = new Variant(new ObjectId(), new Date(), false, "4", false);
+        variants.add(variant1);
+        variants.add(variant2);
+        variants.add(variant3);
+        variants.add(variant4);
         return variants;
+    }
+
+    public void random100() {
+        for (int i = 0; i < 100; i++) {
+            createRandomQuestion();
+        }
     }
 
 

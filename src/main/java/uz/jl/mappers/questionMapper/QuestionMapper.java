@@ -3,16 +3,10 @@ package uz.jl.mappers.questionMapper;
 import uz.jl.dto.GenericDto;
 import uz.jl.dto.question.QuestionCreateDto;
 import uz.jl.dto.question.QuestionUpdateDto;
-import uz.jl.dto.user.UserCreateDto;
-import uz.jl.dto.user.UserUpdateDto;
-import uz.jl.entity.auth.User;
 import uz.jl.entity.quiz.Question;
 import uz.jl.enums.Language.Language;
 import uz.jl.enums.Level;
-import uz.jl.enums.Role.Role;
-import uz.jl.enums.Status.Status;
 import uz.jl.enums.Subject;
-import uz.jl.mappers.GenericBaseMapper;
 import uz.jl.mappers.GenericMapper;
 
 public class QuestionMapper implements GenericMapper<Question, GenericDto, QuestionCreateDto, QuestionUpdateDto> {

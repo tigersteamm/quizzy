@@ -1,9 +1,7 @@
 package uz.jl.ui;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bson.types.ObjectId;
-import uz.jl.dto.quiz.QuizCreateDto;
 import uz.jl.dto.user.UserCreateDto;
 import uz.jl.dto.user.UserUpdateDto;
 import uz.jl.entity.quiz.Question;
@@ -20,7 +18,6 @@ import uz.jl.security.SecurityHolder;
 import uz.jl.services.question.QuestionService;
 import uz.jl.services.quiz.QuizService;
 import uz.jl.services.users.UserService;
-import uz.jl.ui.question.QuestionUI;
 import uz.jl.utils.Color;
 import uz.jl.utils.Input;
 import uz.jl.utils.Print;
@@ -135,23 +132,9 @@ public class UI {
 
             SecurityHolder.session.setCurrentQuiz(quiz);
 
-//            System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(quiz));
-
-
-//            QuizCreateDto dto = QuizCreateDto.childBuilder()
-//                    .subject(subject)
-//                    .level(level)
-//                    .language(language)
-//                    .count(Integer.parseInt(count))
-//                    .duration(Integer.parseInt(count) * 30)
-//                    .build();
-//            ResponseEntity<Data<ObjectId>> response = quizService.create(dto);
-//
-//            Quiz quiz = quizService.get(response.getData().getBody()).getData().getBody();
-//
             long currentTime = System.nanoTime();
             long finishTime = currentTime + quiz.getDuration() * 1000000000L;
-//
+
             for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
                 String correct = "";
                 Print.println(questionsMark.getQuestion().getTitle());
