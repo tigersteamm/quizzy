@@ -4,7 +4,11 @@ import uz.jl.dto.GenericDto;
 import uz.jl.dto.quiz.QuizCreateDto;
 import uz.jl.dto.quiz.QuizUpdateDto;
 import uz.jl.entity.quiz.Quiz;
+import uz.jl.enums.Language.Language;
+import uz.jl.enums.Level;
+import uz.jl.enums.Subject;
 import uz.jl.mappers.GenericMapper;
+
 
 /**
  * @author D4uranbek ср. 20:48. 26.01.2022
@@ -18,13 +22,11 @@ public class QuizMapper implements GenericMapper<Quiz, GenericDto, QuizCreateDto
 
     @Override
     public Quiz fromCreateDto(QuizCreateDto dto) {
-//        return Quiz.childBuilder()
-//                .subject(Subject.getByName(dto.getSubject()))
-//                .level(Level.getByName(dto.getLevel()))
-//                .language(Language.getByCode(dto.getLanguage()))
-//                .
-//                .build();
-        return null;
+        return Quiz.childBuilder()
+                .subject(Subject.getByName(dto.getSubject()))
+                .level(Level.getByName(dto.getLevel()))
+                .language(Language.getByCode(dto.getLanguage()))
+                .build();
     }
 
     @Override

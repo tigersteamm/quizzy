@@ -73,13 +73,13 @@ public class UserRepository extends GenericDao<GenericCriteria, User> implements
         return Objects.isNull(user) ? Optional.empty() : Optional.of(user);
     }
 
-    public void updateSession(User session) {
+    public void updateSession() {
         ObjectMapper mapper = new ObjectMapper();
-        HashMap<String, Object> hashMap = mapper.convertValue(session, new TypeReference<>() {
+        HashMap<String, Object> hashMap = mapper.convertValue(SecurityHolder.session, new TypeReference<>() {
         });
         BasicDBObject basicDBObject = new BasicDBObject(hashMap);
         BasicDBObject query = new BasicDBObject("$set", basicDBObject);
-        collection.updateOne(Filters.eq("_id", session.getId()), query);
+        collection.updateOne(Filters.eq("_id", SecurityHolder.session.getId()), query);
     }
 
     public List<Quiz> getQuizzes() {

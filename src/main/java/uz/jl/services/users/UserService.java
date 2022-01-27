@@ -82,8 +82,8 @@ public class UserService extends AbstractService<UserRepository, UserMapper> imp
     }
 
 
-    public void updateSession(User session) {
-        repository.updateSession(session);
+    public void updateSession() {
+        repository.updateSession();
     }
 
     public ResponseEntity<Data<List<Quiz>>> getQuizzes() {

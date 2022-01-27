@@ -2,9 +2,15 @@ package uz.jl.ui;
 
 import com.google.gson.GsonBuilder;
 import org.bson.types.ObjectId;
+import uz.jl.dto.quiz.QuizCreateDto;
 import uz.jl.dto.user.UserCreateDto;
 import uz.jl.dto.user.UserUpdateDto;
+import uz.jl.entity.quiz.QuestionMark;
 import uz.jl.entity.quiz.Quiz;
+import uz.jl.entity.quiz.Variant;
+import uz.jl.enums.Language.Language;
+import uz.jl.enums.Level;
+import uz.jl.enums.Subject;
 import uz.jl.exceptions.ApiRuntimeException;
 import uz.jl.response.Data;
 import uz.jl.response.ResponseEntity;
@@ -16,6 +22,7 @@ import uz.jl.utils.Color;
 import uz.jl.utils.Input;
 import uz.jl.utils.Print;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,9 +115,17 @@ public class UI {
             String level = Input.getStr("level ");
             String count = Input.getStr("count ");
 
-            Quiz quiz = quizService.create(language, subject, level, count);
-            quizService.solve(quiz);
-            userService.updateSession(SecurityHolder.session);
+
+            QuizCreateDto dto = QuizCreateDto.childBuilder()
+                    .language(String.valueOf(Language.valueOf(language)))
+                    .subject(String.valueOf(Subject.valueOf(subject)))
+                    .level(String.valueOf(Level.valueOf(level)))
+                    .questionsMarks(new ArrayList<>())
+                    .build();
+
+            quizService.createAndSolve(dto, count);
+
+            userService.updateSession();
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
@@ -120,10 +135,42 @@ public class UI {
     public void myQuizzes() {
         try {
             ResponseEntity<Data<List<Quiz>>> quizzes = userService.getQuizzes();
-            Print.println(quizzes.getData().getBody());
+            List<Quiz> list = quizzes.getData().getBody();
+            for (Quiz quiz : list) {
+                showQuizProperties(quiz);
+            }
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
+    }
+
+    private void showQuizProperties(Quiz quiz) {
+        Print.println("Subject: " + quiz.getSubject());
+        Print.println("Level: " + quiz.getLevel());
+        Print.println("Language: " + quiz.getLanguage());
+
+        int correctCount = 0;
+        for (QuestionMark questionsMark : quiz.getQuestionsMarks()) {
+            showQuestionProperties(questionsMark);
+            if (questionsMark.isRight()) {
+                correctCount++;
+            }
+        }
+        int count = quiz.getQuestionsMarks().size();
+
+        Print.println("Result: " + correctCount + "/" + count);
+    }
+
+    private void showQuestionProperties(QuestionMark questionsMark) {
+        Print.println("Question: " + questionsMark.getQuestion().getTitle());
+        Print.println("Variants:");
+        for (Variant variant : questionsMark.getQuestion().getVariants()) {
+            if (variant.isCorrect())
+                Print.println(Color.GREEN, variant.getAnswer());
+            else
+                Print.println(Color.PURPLE, variant.getAnswer());
+        }
+        Print.println("Your answer: " + questionsMark.isRight());
     }
 
 

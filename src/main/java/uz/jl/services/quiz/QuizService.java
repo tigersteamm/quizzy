@@ -38,6 +38,23 @@ public class QuizService extends AbstractService<QuizRepository, QuizMapper> imp
         this.validator = validator;
     }
 
+    public void createAndSolve(QuizCreateDto dto, String count) {
+
+        Quiz quiz = mapper.fromCreateDto(dto);
+
+        for (int i = 0; i < Integer.parseInt(count); i++) {
+            Question random = ApplicationContextHolder.getBean(QuestionRepository.class)
+                    .getRandom(dto.getLanguage(), dto.getSubject(), dto.getLevel());
+
+            QuestionMark questionMark = QuestionMark.childBuilder()
+                    .question(random).build();
+
+            quiz.getQuestionsMarks().add(questionMark);
+        }
+
+        solve(quiz);
+    }
+
     @Override
     public ResponseEntity<Data<ObjectId>> create(QuizCreateDto dto) {
         validator.validOnCreate(dto);
@@ -120,7 +137,9 @@ public class QuizService extends AbstractService<QuizRepository, QuizMapper> imp
 //                    break;
         }
         quiz.setCompleted(true);
-        SecurityHolder.session.getQuizzes().add(quiz);
         SecurityHolder.session.setCurrentQuiz(null);
+        SecurityHolder.session.getQuizzes().add(quiz);
     }
+
+
 }
