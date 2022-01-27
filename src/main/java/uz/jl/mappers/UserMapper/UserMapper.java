@@ -1,7 +1,9 @@
 package uz.jl.mappers.UserMapper;
 
+import org.bson.types.ObjectId;
 import uz.jl.dto.GenericDto;
 import uz.jl.dto.user.UserCreateDto;
+import uz.jl.dto.user.UserDto;
 import uz.jl.dto.user.UserUpdateDto;
 import uz.jl.entity.auth.User;
 import uz.jl.enums.Language.Language;
@@ -28,21 +30,44 @@ public class UserMapper implements GenericMapper<User, GenericDto, UserCreateDto
 
     @Override
     public User fromUpdateDto(UserUpdateDto dto) {
-        return null;
+        return User.childBuilder().id(new ObjectId(dto.getId()))
+                .username(dto.getUsername())
+                .fullName(dto.getFullName())
+                        .language(Language.getByCode(dto.getLanguage())).
+                build();
     }
 
     @Override
-    public GenericDto toDto(User model) {
-        return null;
+    public UserDto toDto(User model) {
+        return UserDto.childBuilder()
+                .username(model.getUsername())
+                .fullName(model.getFullName())
+                .password(model.getPassword())
+                .role(model.getRole())
+                .language(model.getLanguage())
+                .quizzes(model.getQuizzes())
+                .status(model.getStatus())
+                .build();
     }
 
     @Override
     public UserCreateDto toCreateDto(User model) {
-        return null;
+        return UserCreateDto.childBuilder()
+                .username(model.getUsername())
+                .fullName(model.getFullName())
+                .password(model.getPassword())
+                .language(model.getLanguage().toString())
+                .build();
     }
 
     @Override
     public UserUpdateDto toUpdateDto(User model) {
-        return null;
+
+        return UserUpdateDto.childBuilder()
+                .id(model.getId().toString())
+                .username(model.getUsername())
+                .fullName(model.getFullName())
+                .language(model.getLanguage().toString())
+                .build();
     }
 }

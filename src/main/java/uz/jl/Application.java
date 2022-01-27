@@ -17,6 +17,7 @@ public class Application {
 
 
     public static void main(String[] args) {
+        //questionUI.questionCreate();
         run();
     }
 
@@ -29,15 +30,18 @@ public class Application {
             case "REGISTER" -> ui.register();
             case "LOGOUT" -> ui.logout();
 
+            case "CREATETEACHER"->ui.userCreate();
+            case "UPDATETEACHER"->ui.userUpdate();
+            case "DELETETEACHER"->ui.userDelete();
+
 
             case "SOLVE_QUIZ" -> ui.solveQuiz();
             case "MY_QUIZZES" -> ui.myQuizzes();
 
-            case "CREATE_QUESTION" -> questionUI.questionCreate();
-            case "DELETE_QUESTION" -> questionUI.questionDelete();
-            case "1" -> ui.loginAsStudent();
+
+//            case "1" -> ui.loginAsAdmin();
 //            case "2" -> ui.loginAsTeacher();
-            case "3" -> questionUI.createRandomQuestion();
+            case "3" -> ui.loginAsStudent();
             case "EXIT" -> {
                 Print.println(Color.GREEN, "Bye");
                 return;
@@ -45,6 +49,5 @@ public class Application {
             default -> Print.println(Color.RED, "Wrong choice");
 
         }
-        run();
     }
 }

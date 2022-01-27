@@ -8,6 +8,7 @@ import uz.jl.mappers.UserMapper.UserMapper;
 import uz.jl.response.Data;
 import uz.jl.response.ResponseEntity;
 import uz.jl.respository.user.UserRepository;
+import uz.jl.security.SecurityHolder;
 import uz.jl.services.AbstractService;
 import uz.jl.services.GenericCrudService;
 import uz.jl.utils.validator.UserValidator;
@@ -24,27 +25,43 @@ public class UserService extends AbstractService<UserRepository, UserMapper> imp
     }
 
 
-    public void login(String username, String password) {
-
-    }
-
-    public void logout() {
-    }
-
-
     @Override
-    public ResponseEntity<Data<ObjectId>> create(UserCreateDto dto) {
+    public ResponseEntity<Data<ObjectId>> create(UserCreateDto createDto) {
         try {
-            validator.validOnCreate(dto);
-            User user = mapper.fromCreateDto(dto);
+//            validator.validOnCreate(createDto);
+            User user = mapper.fromCreateDto(createDto);
             return new ResponseEntity<>(new Data<>(repository.create(user)));
         } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
+
+    public ResponseEntity<Data<ObjectId>> register(UserCreateDto createDto) {
+        try {
+//            validator.validOnCreate(createDto);
+            User user = mapper.fromCreateDto(createDto);
+            return new ResponseEntity<>(new Data<>(repository.register(user)));
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+
+    public ResponseEntity<Data<Boolean>> login(String username, String password) {
+        try {
+            SecurityHolder.setSession(repository.login(username, password));
+            return new ResponseEntity<>(new Data<>(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new Data<>(false));
+    }
+
+
     @Override
     public ResponseEntity<Data<Void>> update(UserUpdateDto dto) {
+
         return null;
     }
 
