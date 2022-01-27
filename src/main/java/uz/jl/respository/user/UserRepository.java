@@ -1,17 +1,23 @@
 package uz.jl.respository.user;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import uz.jl.criteria.GenericCriteria;
 import uz.jl.dao.GenericDao;
 import uz.jl.entity.auth.User;
+import uz.jl.enums.Role.Role;
 import uz.jl.respository.GenericCrudRepository;
-
+import uz.jl.utils.Color;
+import uz.jl.utils.Print;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
 
 public class UserRepository extends GenericDao<GenericCriteria, User> implements
         GenericCrudRepository<User, ObjectId> {
@@ -22,18 +28,40 @@ public class UserRepository extends GenericDao<GenericCriteria, User> implements
 
     @Override
     public ObjectId create(User model) {
+        model.setRole(Role.TEACHER);
         collection.insertOne(model);
         return model.getId();
     }
 
+    public ObjectId register(User model) {
+        model.setRole(Role.STUDENT);
+        collection.insertOne(model);
+        return model.getId();
+    }
+
+    public User login(String username, String password) {
+        Bson findibleUserId = new Document("username", username);
+        FindIterable<User> users = collection.find(findibleUserId);
+        User session = User.childBuilder().username(users.iterator().next().getUsername()).password(users.iterator().next().getPassword()).language(users.iterator().next().getLanguage()).quizzes(users.iterator().next().getQuizzes()).role(users.iterator().next().getRole()).build();
+        if (Objects.isNull(session) || !Objects.equals(session.getPassword(), password)) {
+            Print.println(Color.RED, "BAD CREDENTIALS");
+        }
+        return session;
+    }
+
+
     @Override
     public void update(User model) {
-        collection.updateOne(Filters.eq("_id", model.getId()), Updates.combine());
+        collection.updateOne(Filters.and(Filters.eq("_id", new ObjectId(model.getId().toHexString())), Filters.eq("role", "TEACHER")), Updates.combine(
+                Updates.set("username", model.getUsername()),
+                Updates.set("password", model.getFullName()),
+                Updates.set("language", model.getLanguage())
+        ));
     }
 
     @Override
     public void delete(ObjectId id) {
-//        collection.updateOne()
+
     }
 
     @Override

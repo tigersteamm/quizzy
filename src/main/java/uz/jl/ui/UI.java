@@ -2,12 +2,15 @@ package uz.jl.ui;
 
 import org.bson.types.ObjectId;
 import uz.jl.dto.quiz.QuizCreateDto;
+import uz.jl.dto.user.UserCreateDto;
+import uz.jl.dto.user.UserUpdateDto;
 import uz.jl.entity.quiz.QuestionMark;
 import uz.jl.entity.quiz.Quiz;
 import uz.jl.entity.quiz.Variant;
 import uz.jl.exceptions.ApiRuntimeException;
 import uz.jl.response.Data;
 import uz.jl.response.ResponseEntity;
+import uz.jl.security.SecurityHolder;
 import uz.jl.services.quiz.QuizService;
 import uz.jl.services.users.UserService;
 import uz.jl.utils.Color;
@@ -34,39 +37,66 @@ public class UI {
     /**
      * auth ui
      */
-    public void login() {
-        try {
-            String username = Input.getStr("username ");
-            String password = Input.getStr("password ");
-            userService.login(username, password);
-        } catch (ApiRuntimeException e) {
-            showResponse(e.getMessage());
-        }
-    }
+    //------------------------------------------AuthUI----------------------------------------------------------------------------------------
 
     public void register() {
+        UserCreateDto dto = UserCreateDto.childBuilder().username(Input.getStr("Username: ")).password(Input.getStr("Password:")).language(Input.getStr("Language:")).build();
+        ResponseEntity<Data<ObjectId>> response = userService.create(dto);
+        Print.println(response.getData().getBody());
+    }
+
+    public void login() {
+        String username = Input.getStr("Username: ");
+        String password = Input.getStr("Password: ");
+        ResponseEntity<Data<Boolean>> response = userService.login(username, password);
+        Print.println(SecurityHolder.session.getUsername() + " " + response.getData().getBody());
     }
 
     public void logout() {
-        userService.logout();
-        Print.println(Color.BLUE, "Bye...");
+        SecurityHolder.killSession();
     }
 
     public void userCreate() {
         try {
-            String username = Input.getStr("username ");
-            String password = Input.getStr("password ");
-            userService.login(username, password);
+            String username = Input.getStr("username: ");
+            String fullName=Input.getStr("FullName: ");
+            String password = Input.getStr("password: ");
+            String language = Input.getStr("language: ");
+            UserCreateDto dto=new UserCreateDto(username,fullName,password,language);
+            ResponseEntity<Data<ObjectId>> dataResponseEntity = userService.create(dto);
+            showResponse(dataResponseEntity.getData().getBody());
         } catch (ApiRuntimeException e) {
             showResponse(e.getMessage());
         }
     }
+    public void userUpdate() {
+        try {
+            String id=Input.getStr("UserId");
+            String username = Input.getStr("username: ");
+            String fullName=Input.getStr("FullName: ");
+            String language = Input.getStr("language: ");
+            UserUpdateDto dto=new UserUpdateDto(id,username,fullName,language);
+            ResponseEntity<Data<Void>> update = userService.update(dto);
+            showResponse(update.getData().getBody());
+        } catch (ApiRuntimeException e) {
+            showResponse(e.getMessage());
+        }
+    }
+    public void userDelete(){
+        try{
+            String id=Input.getStr("UserId");
+               userService.delete(new ObjectId(id));
+        }catch (ApiRuntimeException e){
+            showResponse (e.getMessage());
+        }
+    }
 
     public void loginAsStudent() {
-        String username = "Student";
-        String password = "Student";
+        String username = "hello";
+        String password = "@helloHello007_";
         userService.login(username, password);
     }
+
 
 
     public void solveQuiz() {

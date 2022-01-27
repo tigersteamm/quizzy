@@ -17,8 +17,8 @@ public class Application {
 
 
     public static void main(String[] args) {
-        questionUI.questionCreate();
-//        run();
+        //questionUI.questionCreate();
+        run();
     }
 
     private static void run() {
@@ -29,6 +29,10 @@ public class Application {
             case "LOGIN" -> ui.login();
             case "REGISTER" -> ui.register();
             case "LOGOUT" -> ui.logout();
+
+            case "CREATETEACHER"->ui.userCreate();
+            case "UPDATETEACHER"->ui.userUpdate();
+            case "DELETETEACHER"->ui.userDelete();
 
 
             case "SOLVE_QUIZ" -> ui.solveQuiz();
