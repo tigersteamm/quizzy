@@ -1,8 +1,10 @@
 package uz.jl;
 
 import uz.jl.configs.ApplicationContextHolder;
+import uz.jl.services.question.QuestionService;
 import uz.jl.ui.Menu;
 import uz.jl.ui.UI;
+import uz.jl.ui.question.QuestionUI;
 import uz.jl.utils.Color;
 import uz.jl.utils.Input;
 import uz.jl.utils.Print;
@@ -11,10 +13,12 @@ import java.util.Locale;
 
 public class Application {
     private static final UI ui = ApplicationContextHolder.getBean(UI.class);
+    private static final QuestionUI questionUI = ApplicationContextHolder.getBean(QuestionUI.class);
 
 
     public static void main(String[] args) {
-        run();
+        questionUI.questionCreate();
+//        run();
     }
 
     private static void run() {

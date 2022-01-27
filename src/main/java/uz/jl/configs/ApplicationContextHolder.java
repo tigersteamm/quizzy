@@ -10,13 +10,18 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import uz.jl.entity.auth.User;
 import uz.jl.entity.quiz.Quiz;
 import uz.jl.mappers.UserMapper.UserMapper;
+import uz.jl.mappers.questionMapper.QuestionMapper;
 import uz.jl.mappers.quiz.QuizMapper;
+import uz.jl.respository.question.QuestionRepository;
 import uz.jl.respository.quiz.QuizRepository;
 import uz.jl.respository.user.UserRepository;
+import uz.jl.services.question.QuestionService;
 import uz.jl.services.quiz.QuizService;
 import uz.jl.services.users.UserService;
 import uz.jl.ui.UI;
+import uz.jl.ui.question.QuestionUI;
 import uz.jl.utils.BaseUtils;
+import uz.jl.utils.validator.QuestionValidator;
 import uz.jl.utils.validator.QuizValidator;
 import uz.jl.utils.validator.UserValidator;
 
@@ -31,20 +36,26 @@ public class ApplicationContextHolder {
     private static BaseUtils utils;
 
     private static final UserValidator userValidator;
+    private static QuestionValidator questionValidator;
     private static final QuizValidator quizValidator;
 
     private static final UserMapper userMapper;
+    private static QuestionMapper questionMapper;
     private static final QuizMapper quizMapper;
 
     private static final UserRepository userRepository;
+    private static  QuestionRepository questionRepository;
     private static final QuizRepository quizRepository;
 
     private static final UserService userService;
+    private static final QuestionService questionService;
     private static final QuizService quizService;
     private static final UI ui;
+    private static  QuestionUI questionUI;
 
 
     static {
+        connect();
         utils = new BaseUtils();
 
         userValidator = new UserValidator(utils);
@@ -57,10 +68,12 @@ public class ApplicationContextHolder {
         quizRepository = new QuizRepository(Quiz.class);
 
         userService = new UserService(userRepository, userMapper, userValidator);
+        questionService = new QuestionService(questionRepository, questionMapper, questionValidator);
         quizService = new QuizService(quizRepository, quizMapper, quizValidator);
 
 
         ui = new UI(userService, quizService);
+        questionUI = new QuestionUI(questionService);
 
     }
 
@@ -68,7 +81,7 @@ public class ApplicationContextHolder {
         return getBean(clazz.getSimpleName());
     }
 
-    private static <T> T getBean(String beanName) {
+    public static <T> T getBean(String beanName) {
         return switch (beanName) {
 
             case "MongoDatabase" -> (T) db;
@@ -88,6 +101,7 @@ public class ApplicationContextHolder {
 
 
             case "UI" -> (T) ui;
+            case "QuestionUI" -> (T) questionUI;
             default -> throw new RuntimeException("Bean Not Found");
         };
     }
